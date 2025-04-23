@@ -5,7 +5,10 @@ Rails.application.routes.draw do
   resource :session do
     post "register", as: :register
   end
-  resources :passwords, param: :token
+  # Disabling this because I don't have emails set up.
+  # If someone forgets their password, they can just make a new account :)
+  # resources :passwords, param: :token
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
