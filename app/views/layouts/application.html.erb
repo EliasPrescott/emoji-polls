@@ -33,7 +33,7 @@
       </h1>
       <div>
         <% if authenticated? %>
-          <span>Logged in as <%= get_session.user.email_address %></span>
+          <span><%= get_session.user.email_address %></span>
           <%= button_to "Log out", session_path, method: :delete %>
         <% end %>
       </div>
