@@ -4,6 +4,10 @@ service: emoji_polls
 # Name of the container image.
 image: australorp/emoji_polls
 
+ssh:
+  user: admin
+  keys: [ ".ssh/kamal" ]
+
 # Deploy to these servers.
 servers:
   web:
