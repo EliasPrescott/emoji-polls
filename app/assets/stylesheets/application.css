@@ -40,7 +40,7 @@ button, input[type="submit"] {
   --border-color: var(--lch-blue-dark);
   transition: color 0.25s, background-color 0.25s;
   padding: 6px;
-  font-size: inherit;
+  font-size: 0.9rem;
   border: none;
   border: 1px solid oklch(var(--border-color));
   cursor: pointer;
