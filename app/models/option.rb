@@ -5,5 +5,7 @@ class Option < ApplicationRecord
 
   # This regex is a best-effort attempt at matching most emojis without allowing too much nonsense.
   # Trying to properly handle all possible valid "emojis sequences" would be a nightmare.
-  validates :content, format: { with: /\A\p{Emoji}(\u200D\p{Emoji}){0,5}\uFE0F?\z/, message: "must be a single valid emoji" }
+  validates :content, format: {
+    with: /\A\p{Emoji}\p{Emoji_Modifier}?(\u200D\p{Emoji}\p{Emoji_Modifier}?){0,5}\uFE0F?\z/, message: "must be a single valid emoji"
+  }
 end
