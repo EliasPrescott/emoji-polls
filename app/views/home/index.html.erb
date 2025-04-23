@@ -1,5 +1,19 @@
 <% if authenticated? %>
   <h1>
+    Featured Polls:
+  </h1>
+
+  <p>
+    A curated list of polls for you to vote on.
+  </p>
+
+  <% @featured_polls.each do |poll| %>
+    <%= render poll %>
+  <% end %>
+
+  <hr />
+
+  <h1>
     Your Latest Polls
     (<%= link_to "Add New", new_poll_path %>)
   </h1>
