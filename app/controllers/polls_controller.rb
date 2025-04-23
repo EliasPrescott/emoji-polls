@@ -2,7 +2,7 @@ class PollsController < ApplicationController
   include PollDetails
   before_action :set_poll, only: %i[ edit update destroy ]
 
-  # GET /polls/1 or /polls/1.json
+  # GET /polls/1
   def show
     load_show_details(params.expect(:id))
     @option = Option.new
@@ -19,43 +19,32 @@ class PollsController < ApplicationController
   def edit
   end
 
-  # POST /polls or /polls.json
+  # POST /polls
   def create
     @poll = Poll.new(poll_params)
     @poll.user = Current.session.user
 
-    respond_to do |format|
-      if @poll.save
-        format.html { redirect_to @poll, notice: "Poll was successfully created." }
-        format.json { render :show, status: :created, location: @poll }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @poll.errors, status: :unprocessable_entity }
-      end
+    if @poll.save
+      redirect_to @poll, notice: "Poll was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /polls/1 or /polls/1.json
+  # PATCH/PUT /polls/1
   def update
-    respond_to do |format|
-      if @poll.update(poll_params)
-        format.html { redirect_to @poll, notice: "Poll was successfully updated." }
-        format.json { render :show, status: :ok, location: @poll }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @poll.errors, status: :unprocessable_entity }
-      end
+    if @poll.update(poll_params)
+      redirect_to @poll, notice: "Poll was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /polls/1 or /polls/1.json
+  # DELETE /polls/1
   def destroy
     @poll.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to root_path, status: :see_other, notice: "Poll was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to root_path, status: :see_other, notice: "Poll was successfully destroyed."
   end
 
   private

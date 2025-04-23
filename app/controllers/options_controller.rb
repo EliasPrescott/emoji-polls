@@ -6,10 +6,7 @@ class OptionsController < ApplicationController
     poll = @option.poll
     @option.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to poll, status: :see_other, notice: "Option was successfully deleted." }
-      format.json { head :no_content }
-    end
+    redirect_to poll, status: :see_other, notice: "Option was successfully deleted."
   end
 
   def create
@@ -18,17 +15,11 @@ class OptionsController < ApplicationController
     @poll = Poll.where(id: @option.poll_id, user_id: Current.session.user.id).first!
     @option.user = Current.session.user
 
-    respond_to do |format|
-      if @option.save
-        format.html { redirect_to @poll, notice: "Option was successfully created." }
-        format.json { render :show, status: :created, location: @option }
-      else
-        format.html {
-          load_show_details(@option.poll_id)
-          render "polls/show", status: :unprocessable_entity
-        }
-        format.json { render json: @option.errors, status: :unprocessable_entity }
-      end
+    if @option.save
+      redirect_to @poll, notice: "Option was successfully created."
+    else
+      load_show_details(@option.poll_id)
+      render "polls/show", status: :unprocessable_entity
     end
   end
 

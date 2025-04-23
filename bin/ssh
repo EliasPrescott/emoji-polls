@@ -1,2 +1,0 @@
-#!/usr/bin/sh
-ssh -F .ssh/kamal admin@emoji-polls.australorp.dev

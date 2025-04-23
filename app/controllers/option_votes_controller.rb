@@ -9,14 +9,10 @@ class OptionVotesController < ApplicationController
       @vote.save
     end
 
-    respond_to do |format|
-      if save_result
-        format.html { redirect_to @vote.poll, notice: "Vote was successfully #{delete_count > 0 ? "changed" : "added"}." }
-        format.json { render :show, status: :created, location: @vote }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @vote.errors, status: :unprocessable_entity }
-      end
+    if save_result
+      redirect_to @vote.poll, notice: "Vote was successfully #{delete_count > 0 ? "changed" : "added"}."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -28,10 +24,7 @@ class OptionVotesController < ApplicationController
     poll = option_vote.poll
     option_vote.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to poll, status: :see_other, notice: "Vote was successfully removed." }
-      format.json { head :no_content }
-    end
+    redirect_to poll, status: :see_other, notice: "Vote was successfully removed."
   end
 
   private
