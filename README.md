@@ -22,7 +22,41 @@ index_sessions_on_user_id
 ...
 ```
 
-If this application scaled up in users, it might be good to use [counter_cache](https://guides.rubyonrails.org/association_basics.html#counter-cache) to remove the left join and count on `option_votes`.
+To see which indexes are actually being used, I grabbed the generated SQL from the server logs and ran explain on it:
+
+```sql
+EXPLAIN
+SELECT
+  options.*,
+  user_vote.id AS user_vote_id,
+  COUNT(option_votes.id) AS vote_count
+FROM "options"
+LEFT OUTER JOIN "option_votes" ON "option_votes"."option_id" = "options"."id"
+LEFT JOIN (
+  SELECT "option_votes".*
+  FROM "option_votes"
+  WHERE "option_votes"."poll_id" = 5 AND "option_votes"."user_id" = 4
+  LIMIT 1
+) user_vote ON user_vote.option_id = options.id
+WHERE "options"."poll_id" = 5
+GROUP BY "options"."id";
+```
+
+Side note: trying to read a SQLite query plan reminded my of just how different it is from PostgreSQL and SQL Server.
+I knew it had some different design choices just because it's built for very different use cases than the mainstream SQL engines, but trying to read its query plan was like trying to read French as a native English speaker, strangely familiar but mostly gibberish.
+
+After a quick search through the query plan results (I use [vim-dadbod](https://github.com/tpope/vim-dadbod) and [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) and you should too), I was able to find that my query hits these three indexes:
+
+```
+index_options_on_poll_id
+index_option_votes_on_option_id
+index_option_votes_on_user_id
+```
+
+To be honest, I didn't get a lot of meaningful insight out of the query plan just because I don't have experience optimizing SQLite queries like I do with PostgreSQL.
+If anything, it just confirmed that this query has a fairly straightforward execution plan, which is a good sign that it should scale well.
+
+If this application dramatically scaled up in users, it might be good to use [counter_cache](https://guides.rubyonrails.org/association_basics.html#counter-cache) to remove the left join and count on `option_votes`.
 
 I struggled with knowing where to put the `load_show_details` function at first.
 I know that Rails relies heavily on auto-loading and it has strong conventions, so I knew there had to be a "blessed" place to put a method that would be shared by multiple controllers.
@@ -55,7 +89,7 @@ After matching emojis and emoji modifiers, you also have to worry about [zero-wi
 Since there are lots of standardized emojis that use these spacers to join multiple other emojis together, I knew I would have to support multiple pairs of spacers and additional emojis.
 After a quick search, it looks like most of the longer emojis should cap out at around 10 code points long, so I picked that as a rough target.
 I ended up with `(\u200D\p{Emoji}\p{Emoji_Modifier}?){0,5}` as way of supporting up to 5 zero-width joiners.
-Each joiner is must be followed by an additional emoji, and may be followed by another emoji modifier.
+Each joiner must be followed by an additional emoji, and may be followed by another emoji modifier.
 I haven't actually seen an emoji in the wild that uses multiple emoji modifiers, but I'm sure they exist.
 
 To finish off the regex, I threw in `\uFE0F?` because one emoji I was testing had that at the end.
