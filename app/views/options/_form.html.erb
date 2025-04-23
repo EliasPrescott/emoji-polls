@@ -1,0 +1,22 @@
+<%= form_with(model: option) do |form| %>
+  <%= form.hidden_field :poll_id, value: option.poll_id %>
+  <% if option.errors.any? %>
+    <div style="color: red">
+      <h3><%= pluralize(option.errors.count, "error") %> prohibited this option from being saved:</h3>
+
+      <ul>
+        <% option.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.text_field :content %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

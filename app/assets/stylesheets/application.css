@@ -1,0 +1,245 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+:root {
+  font-family: "Alegreya Sans";
+  --lch-gray: 96% 0.005 96;
+  --lch-gray-dark: 92% 0.005 96;
+  --lch-gray-darker: 75% 0.005 96;
+
+  --lch-green: 76% 0.2 144;
+
+  --lch-blue: 95% 0.05 250;
+  --lch-blue-dark: 50% 0.15 250;
+
+  --lch-warn: 95% 0.05 48;
+  --lch-warn-dark: 65% 0.15 50;
+
+  font-size: 18px;
+}
+
+body {
+  margin: 0;
+}
+
+h1,h2,h3,h4,h5,h6,a,button,input[type="submit"] {
+  font-family: "Alegreya";
+  margin: 0;
+}
+
+button, input[type="submit"] {
+  --bg-color: var(--lch-blue);
+  --border-color: var(--lch-blue-dark);
+  transition: color 0.25s, background-color 0.25s;
+  padding: 6px;
+  font-size: inherit;
+  border: none;
+  border: 1px solid oklch(var(--border-color));
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: oklch(var(--bg-color));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: oklch(var(--border-color));
+    color: white;
+  }
+
+  &.warn {
+    --bg-color: var(--lch-warn);
+    --border-color: var(--lch-warn-dark);
+  }
+
+  svg {
+    height: 1rlh;
+  }
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  & > * {
+    flex: 1;
+  }
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  h1 {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+main {
+  padding: 12px;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.intro-header {
+  font-size: 2.4em;
+}
+
+.intro-text {
+  font-size: 2em;
+  max-width: min(80ch, 80vw);
+}
+
+.links {
+  padding-top: 3em;
+  display: flex;
+  gap: 3em;
+
+  a {
+    font-size: 2em;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 80vw;
+  font-size: 1.4rem;
+  
+  input {
+    padding: 4px;
+    font-size: inherit;
+    border: 1px solid oklch(var(--lch-gray-darker));
+  }
+}
+
+hr {
+  margin: 48px 0;
+  border-color: oklch(var(--lch-gray));
+}
+
+.poll-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.poll-actions {
+  display: flex;
+}
+
+.card {
+  padding: 12px;
+  border: 1px dashed oklch(var(--lch-gray-darker));
+  border-radius: 12px;
+}
+
+.options-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 90vw;
+  gap: 12px;
+}
+
+.option {
+  .content {
+    font-size: 4rem;
+  }
+
+  --border-color: oklch(var(--lch-gray-darker));
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+
+  &.has-votes {
+    --background-color: oklch(var(--lch-gray) / 90%);
+
+    &.selected {
+      --background-color: oklch(var(--lch-green) / 25%);
+      --border-color: oklch(var(--lch-green) / 90%);
+    }
+  }
+
+  min-width: 200px;
+  max-width: 400px;
+  padding: 12px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+.notice, .alert {
+  --bg-color: var(--lch-gray);
+  --border-color: var(--lch-gray-darker);
+
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  justify-content: center;
+  padding: 12px;
+  border-radius: 12px;
+
+  .notice-bar {
+    h5 {
+      font-size: 2rem;
+    }
+
+    button {
+      --bg-color: var(--lch-gray);
+      --border-color: var(--lch-gray-darker);
+    }
+
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  span {
+    font-size: 1.4rem;
+  }
+
+  transition: opacity 1s;
+  opacity: 1;
+
+  border: 1px solid oklch(var(--border-color));
+  background-color: oklch(var(--bg-color));
+
+  &.alert {
+    --bg-color: var(--lch-warn);
+    --border-color: var(--lch-warn-dark);
+  }
+
+  &.fading {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,37 @@
+<div>
+  <%= render @poll %>
+
+  <% if @poll.user == Current.user %>
+    <div class="card">
+      <h3>Admin Actions</h3>
+      <p>
+        <%= link_to "Edit this poll", edit_poll_path(@poll) %>
+      </p>
+
+      <div class="poll-actions">
+        <%= button_to "Destroy this poll", @poll, method: :delete, class: "warn" %>
+      </div>
+    </div>
+  <% end %>
+
+  <hr />
+
+  <div>
+    <div class="options-list">
+      <% @options.each do |option| %>
+        <%= render option, poll: @poll %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @options.any? %>
+    <hr />
+  <% end %>
+
+  <% if @poll.user == Current.user %>
+    <div class="card">
+      <h3>Add a New Option</h3>
+      <%= render "options/form", option: @option %>
+    </div>
+  <% end %>
+</div>

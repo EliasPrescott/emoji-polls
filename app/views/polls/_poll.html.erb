@@ -1,0 +1,5 @@
+<div id="<%= dom_id poll %>" class="poll-preview">
+  <h2>Poll: <%= link_to poll.title, poll %></h2>
+
+  <sub>Created: <%= time_tag poll.created_at, "data-local": "time", "data-format": "%B %e, %Y %l:%M%P" %></sub>
+</div>

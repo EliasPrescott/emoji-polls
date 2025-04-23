@@ -1,0 +1,27 @@
+<% if authenticated? %>
+  <h1>
+    Your Latest Polls
+    (<%= link_to "Add New", new_poll_path %>)
+  </h1>
+
+  <p>
+    To share any polls you create, simple copy the link and share it!
+  </p>
+
+  <% @polls.each do |poll| %>
+    <%= render poll %>
+  <% end %>
+<% else %>
+  <h1 class="intro-header">Welcome to Emoji Polls! 👋</h1>
+
+  <p class="intro-text">
+    Emoji Polls is a place to vote on the most important issues of our time using the greatest form of communication: emojis!
+    To get started, simply create an account or log in.
+    Then you can start creating polls and sharing them with your friends!
+  </p>
+
+  <div class="links">
+    <%= link_to "Register 🤝", register_path %>
+    <%= link_to "Login 🤗", login_path %>
+  </div>
+<% end %>
