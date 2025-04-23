@@ -97,11 +97,11 @@ main {
 }
 
 .intro-header {
-  font-size: 2em;
+  font-size: 1.6em;
 }
 
 .intro-text {
-  font-size: 1.6em;
+  font-size: 1.4em;
   max-width: min(80ch, 80vw);
 }
 
