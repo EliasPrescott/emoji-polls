@@ -7,13 +7,17 @@ class SessionsController < ApplicationController
   end
 
   def register
-    user = User.create(params.permit(:email_address, :password))
-    if user
-      start_new_session_for user
-      redirect_to root_path, notice: "Account created successfully!"
-    else
-      redirect_to register_path, alert: "Could not register a new account with that email address."
+    begin
+      user = User.create(params.permit(:email_address, :password))
+      if user
+        start_new_session_for user
+        redirect_to root_path, notice: "Account created successfully!"
+        return
+      end
+    rescue ActiveRecord::RecordNotUnique
     end
+
+    redirect_to register_path, alert: "Could not register a new account with that email address."
   end
 
   def create
