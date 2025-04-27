@@ -45,6 +45,10 @@ GROUP BY "options"."id";
 Side note: trying to read a SQLite query plan reminded my of just how different it is from PostgreSQL and SQL Server.
 I knew it had some different design choices just because it's built for very different use cases than the mainstream SQL engines, but trying to read its query plan was like trying to read French as a native English speaker, strangely familiar but mostly gibberish.
 
+> [!NOTE]  
+> Update: I was reading through the SQLite docs for an unrelated reason when I found that I was using the wrong type of explain here. Just using `EXPLAIN` will give you a description of the low-level description of the plan (in rough terms, it gives you a physical plan instead of a logical plan). To get a higher-level query plan that's closer to what I'm used to from Postgres, you can use [`EXPLAIN QUERY PLAN`](https://sqlite.org/eqp.html).
+> Also, Active Record has an `explain` method that I could have used instead. It looks like that method calls `EXPLAIN QUERY PLAN` under the hood ([Rails source](https://github.com/rails/rails/blob/main/activerecord/lib/active_record/connection_adapters/sqlite3/database_statements.rb#L18-L22)).
+
 After a quick search through the query plan results (I use [vim-dadbod](https://github.com/tpope/vim-dadbod) and [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) and you should too), I was able to find that my query hits these three indexes:
 
 ```
