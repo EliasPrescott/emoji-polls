@@ -4,7 +4,7 @@ A toy app I made to play around with Rails 8.
 
 ## Notable Files
 
-- [poll_details.rb](./app/controllers/concerns/poll_details.rb)
+### [poll_details.rb](./app/controllers/concerns/poll_details.rb)
 
 This file is an example of a slightly more complicated query that is more analytical than a typical CRUD app read query would be.
 It should take good advantage of the standard indexes that come built-in with the scaffolding migrations.
@@ -66,7 +66,9 @@ I struggled with knowing where to put the `load_show_details` function at first.
 I know that Rails relies heavily on auto-loading and it has strong conventions, so I knew there had to be a "blessed" place to put a method that would be shared by multiple controllers.
 I settled on making a new concern to hold the method because I found a somewhat recent post online that recommended that.
 
-- [option.rb](./app/models/option.rb)
+---
+
+### [option.rb](./app/models/option.rb)
 
 I'm fairly new to Rails, so I still can't get over how concise the models tend to be.
 I'm sure the models in a real battle-hardened application would look a lot different, but I enjoy the trim and tidy look of a freshly-generated model.
