@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+require "sshkit"
+require "sshkit/dsl"
+require "date"
+require "json"
+include SSHKit::DSL
+
+SSHKit::Backend::Netssh.configure do |ssh|
+  ssh.ssh_options = {
+    user: 'admin',
+    keys: ['.ssh/kamal'],
+    forward_agent: false,
+    auth_methods: ['publickey'],
+  }
+end
+
+environment = "production"
+
+on 'emoji-polls.australorp.dev' do
+  file_name = "#{DateTime.now.strftime("%Y-%m-%d")}-#{environment}.db"
+  temp_file_path = "/tmp/#{file_name}"
+  local_image_path = "./images/#{file_name}"
+  info "Backing up image to #{temp_file_path} on #{host}"
+  volumes_output = capture :docker, "volume", "inspect", "emoji_polls_storage"
+  volumes_info = JSON.parse volumes_output
+  volume_path = volumes_info[0]["Mountpoint"]
+  execute :sudo, :sqlite3, "#{volume_path}/#{environment}.sqlite3", "'.backup #{temp_file_path}'"
+  download! temp_file_path, local_image_path
+  info "Deleting image on #{host}"
+  execute :sudo, :rm, temp_file_path
+end
